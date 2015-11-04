@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace UamTTA
 {
-    public class Budget
+    public class Budget : ModelBase
     {
         public Budget(
             DateTime validFrom, DateTime validTo,

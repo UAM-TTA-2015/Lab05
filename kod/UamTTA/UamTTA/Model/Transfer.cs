@@ -2,7 +2,7 @@
 
 namespace UamTTA
 {
-    public class Transfer
+    public class Transfer : ModelBase
     {
         public Transfer(decimal amount, Account sourceAccount, Account destinationAccount,
             Budget budget, DateTime? plannedDate, DateTime? transferDate,

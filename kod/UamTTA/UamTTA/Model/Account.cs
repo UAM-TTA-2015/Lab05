@@ -1,6 +1,6 @@
 ﻿namespace UamTTA
 {
-    public class Account
+    public class Account : ModelBase
     {
         public Account(string name, decimal balance, Account clearingAccount = null, string relatedBankAccount = null,
             decimal? expectedIncomes = null, decimal? targetBalance = null)

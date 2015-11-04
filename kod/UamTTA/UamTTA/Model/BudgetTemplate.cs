@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace UamTTA
 {
-    public class BudgetTemplate
+    public class BudgetTemplate : ModelBase
     {
         public BudgetTemplate(Duration defaultDuration, string defaultName, IEnumerable<Account> defaultAccounts = null)
         {
