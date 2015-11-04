@@ -2,9 +2,9 @@
 
 namespace UamTTA.Storage
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T> where T : class, IEntity
     {
-        IQueryable<T> Query { get; }
+        T FindById(int id);
 
         T Persist(T item);
 

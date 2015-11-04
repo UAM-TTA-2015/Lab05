@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UamTTA.Storage;
 
 namespace UamTTA.Tests
 {
@@ -71,13 +71,13 @@ namespace UamTTA.Tests
         }
 
         [Test]
-        public void Persisted_Data_Should_Be_Accesible_By_Id_Via_Query_Property()
+        public void Persisted_Data_Should_Be_Accesible_By_Id_Via_FindById()
         {
             var someTransientModel = new TestModel { Id = null, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
 
             TestModel persisted = _sut.Persist(someTransientModel);
 
-            TestModel actual = _sut.Query.Single(x => x.Id == persisted.Id);
+            TestModel actual = _sut.FindById(persisted.Id.Value);
             Assert.That(actual.Id, Is.EqualTo(persisted.Id));
             Assert.That(actual.SomeIntAttribute, Is.EqualTo(persisted.SomeIntAttribute));
             Assert.That(actual.SomeStringAttribute, Is.EqualTo(persisted.SomeStringAttribute));
@@ -91,7 +91,7 @@ namespace UamTTA.Tests
             TestModel persisted = _sut.Persist(someTransientModel);
             var anotherWithSameId = new TestModel { Id = persisted.Id, SomeIntAttribute = 1121210, SomeStringAttribute = "xd^grrr" };
             _sut.Persist(anotherWithSameId);
-            TestModel actual = _sut.Query.Single(x => x.Id == persisted.Id);
+            TestModel actual = _sut.FindById(persisted.Id.Value);
 
             Assert.That(actual.Id, Is.EqualTo(persisted.Id));
             Assert.That(actual.SomeIntAttribute, Is.EqualTo(anotherWithSameId.SomeIntAttribute));
@@ -99,7 +99,15 @@ namespace UamTTA.Tests
         }
 
         [Test]
-        public void Remove_Should_Remove_Item_OF_Same_Id_From_Storage()
+        public void FindById_Should_Return_NUll_When_Object_Og_Given_Id_Was_Not_Found()
+        {
+            TestModel actual = _sut.FindById(4475438);
+
+            Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void Remove_Should_Remove_Item_Of_Same_Id_From_Storage()
         {
             var someTransientModel = new TestModel { Id = null, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
 
@@ -107,7 +115,7 @@ namespace UamTTA.Tests
             var anotherWithSameId = new TestModel { Id = persisted.Id };
             _sut.Remove(anotherWithSameId);
 
-            TestModel actual = _sut.Query.SingleOrDefault(x => x.Id == persisted.Id);
+            TestModel actual = _sut.FindById(persisted.Id.Value);
 
             Assert.That(actual, Is.Null);
         }
