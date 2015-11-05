@@ -12,4 +12,5 @@ Przygotujemy kolejne części aplikacji, które staną się bazą do zapisywania
 ### Materiały
 * Wymagania które ma spełniać nasza aplikacja: [Wymagania](Wymagania.md)
 * Funkcje do zaimplementowania: [Zadania](Zadania.md)
+* Zadanie domowe: [Zadanie domowe](ZadanieDomowe.md)
 * Kod: [UamTTA](kod/UamTTA)
