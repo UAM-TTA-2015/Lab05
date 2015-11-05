@@ -14,10 +14,15 @@ namespace UamTTA.Storage
             _idGenerator = Enumerable.Range(1, Int32.MaxValue).GetEnumerator();
         }
 
+        public IEnumerable<T> GetAll()
+        {
+            return _storage.Values;
+        }
+
         public T FindById(int id)
         {
             T result;
-            return !_storage.TryGetValue(id,out result) ? null : result;
+            return !_storage.TryGetValue(id, out result) ? null : result;
         }
 
         public T Persist(T item)

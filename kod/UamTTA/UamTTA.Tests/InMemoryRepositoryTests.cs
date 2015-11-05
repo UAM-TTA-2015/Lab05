@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using UamTTA.Storage;
 
 namespace UamTTA.Tests
@@ -76,8 +77,8 @@ namespace UamTTA.Tests
             var someTransientModel = new TestModel { Id = null, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
 
             TestModel persisted = _sut.Persist(someTransientModel);
-
             TestModel actual = _sut.FindById(persisted.Id.Value);
+
             Assert.That(actual.Id, Is.EqualTo(persisted.Id));
             Assert.That(actual.SomeIntAttribute, Is.EqualTo(persisted.SomeIntAttribute));
             Assert.That(actual.SomeStringAttribute, Is.EqualTo(persisted.SomeStringAttribute));
@@ -118,6 +119,29 @@ namespace UamTTA.Tests
             TestModel actual = _sut.FindById(persisted.Id.Value);
 
             Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void GetAll_Returns_Empty_Collection_When_Repository_Is_Empty()
+        {
+            var result = _sut.GetAll();
+
+            Assert.That(result.Any(), Is.False);
+            //CollectionAssert.IsEmpty(result);
+        }
+
+        [Test]
+        public void GetAll_Returns_All_Items()
+        {
+            var model1 = new TestModel { Id = null, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
+            var model2 = new TestModel { Id = null, SomeIntAttribute = 12, SomeStringAttribute = "BlaBla" };
+
+            _sut.Persist(model1);
+            _sut.Persist(model2);
+            var result = _sut.GetAll();
+
+            Assert.That(result.Count(), Is.EqualTo(2));
+            CollectionAssert.AllItemsAreUnique(result);
         }
     }
 }
