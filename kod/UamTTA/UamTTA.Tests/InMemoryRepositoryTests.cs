@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using UamTTA.Storage;
 
@@ -143,5 +144,82 @@ namespace UamTTA.Tests
             Assert.That(result.Count(), Is.EqualTo(2));
             CollectionAssert.AllItemsAreUnique(result);
         }
+
+        [Test]
+        public void Take_Returns_First_Three_Items()
+        {
+            var model1 = new TestModel { Id = null, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
+            var model2 = new TestModel { Id = null, SomeIntAttribute = 12, SomeStringAttribute = "BlaBla" };
+            var model3 = new TestModel { Id = null, SomeIntAttribute = 14, SomeStringAttribute = "BlaBlaBla" };
+
+
+            _sut.Persist(model1);
+            _sut.Persist(model2);
+            _sut.Persist(model3);
+
+            var result= _sut.Take(3);
+
+            Assert.That(result.Count(), Is.EqualTo(3));
+
+        }
+
+        [Test]
+        public void Take_Returns_First_Two_Items_But_Is_Three()
+        {
+            var model1 = new TestModel { Id = null, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
+            var model2 = new TestModel { Id = null, SomeIntAttribute = 12, SomeStringAttribute = "BlaBla" };
+            var model3 = new TestModel { Id = null, SomeIntAttribute = 14, SomeStringAttribute = "BlaBlaBla" };
+
+
+            _sut.Persist(model1);
+            _sut.Persist(model2);
+            _sut.Persist(model3);
+
+            var result = _sut.Take(2);
+
+            Assert.That(result.Count(), Is.EqualTo(2));
+
+        }
+
+        [Test]
+        public void Take_Returns_Throw_ArgumentException_Because_Is_Empty()
+        {
+           
+            var e = Assert.Throws<ArgumentException>(() =>_sut.Take(2));
+
+            Assert.That(e.Message, Is.EqualTo("Empty repository"));
+
+        }
+
+        [Test]
+        public void Take_Returns_Throw_ArgumentException_Because_Not_Enough_Items()
+        {
+            var model1 = new TestModel { Id = null, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
+
+            _sut.Persist(model1);
+
+
+            var e = Assert.Throws<ArgumentException>(() => _sut.Take(2));
+
+            Assert.That(e.Message, Is.EqualTo("Empty repository"));
+
+        }
+
+        [Test]
+        public void Take_Returns_Throw_ArgumentException_Because_Expects_Items()
+        {
+
+            var e = Assert.Throws<ArgumentException>(() => _sut.Take(0));
+
+            Assert.That(e.Message, Is.EqualTo("Empty repository"));
+
+        }
+
+
+
+
+
+
+
     }
 }

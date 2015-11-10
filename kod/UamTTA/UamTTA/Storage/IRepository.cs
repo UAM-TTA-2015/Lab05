@@ -6,6 +6,8 @@ namespace UamTTA.Storage
     {
         IEnumerable<T> GetAll();
 
+        IEnumerable<T> Take(int count);
+
         T FindById(int id);
 
         T Persist(T item);

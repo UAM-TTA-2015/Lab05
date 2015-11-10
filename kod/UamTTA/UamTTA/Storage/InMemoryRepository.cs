@@ -19,6 +19,18 @@ namespace UamTTA.Storage
             return _storage.Values;
         }
 
+        public IEnumerable<T> Take(int count)
+        {
+
+            if (_storage.Values.Take(count).Count()==count && count!=0)
+            {
+
+                return _storage.Values.Take(count);
+            }
+
+            throw new ArgumentException("Empty repository");
+        }
+
         public T FindById(int id)
         {
             T result;
