@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using UamTTA.Storage;
@@ -18,6 +19,8 @@ namespace UamTTA.Tests
 
         private class TestModel : ModelBase
         {
+//            public IEnumerable<int> Ids { get; set; }
+
             public int SomeIntAttribute { get; set; }
 
             public string SomeStringAttribute { get; set; }
@@ -208,13 +211,32 @@ namespace UamTTA.Tests
         [Test]
         public void Take_Returns_Throw_ArgumentException_Because_Expects_Items()
         {
-
             var e = Assert.Throws<ArgumentException>(() => _sut.Take(0));
 
             Assert.That(e.Message, Is.EqualTo("Empty repository"));
-
         }
 
+        [Test]
+        public void GetByIds_Return_Item_By_Id()
+        {
+
+            var model1 = new TestModel { Id = 1, SomeIntAttribute = 10, SomeStringAttribute = "Bla" };
+            var model2 = new TestModel { Id = 3, SomeIntAttribute = 12, SomeStringAttribute = "BlaBla" };
+            var model3 = new TestModel { Id = 4, SomeIntAttribute = 14, SomeStringAttribute = "BlaBlaBla" };
+
+
+            _sut.Persist(model1);
+            _sut.Persist(model2);
+            _sut.Persist(model3);
+
+            List<int> lista = new List<int>() {1, 3, 4};
+
+
+            var result = _sut.GetByIds(lista);
+
+
+            Assert.That(result.Count(), Is.EqualTo(3));
+        }
 
 
 
