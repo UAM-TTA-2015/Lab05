@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace UamTTA.Storage
 {
@@ -17,6 +18,24 @@ namespace UamTTA.Storage
         public IEnumerable<T> GetAll()
         {
             return _storage.Values;
+        }
+
+        public IEnumerable<T> Take(int count)
+        {
+
+            if (_storage.Values.Take(count).Count()==count && count!=0)
+            {
+
+                return _storage.Values.Take(count);
+            }
+
+            throw new ArgumentException("Empty repository");
+        }
+
+        public IEnumerable<T> GetByIds(IEnumerable<int> ids)
+        {
+            return ids.Where(_storage.ContainsKey).Select(x => _storage[x]).ToList();
+
         }
 
         public T FindById(int id)
